@@ -1,3 +1,5 @@
+using UserService.DTO;
+
 namespace UserService.AsyncDataServices
 {
     public interface IMessageBusClient

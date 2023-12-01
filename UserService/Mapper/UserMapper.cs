@@ -10,7 +10,7 @@ namespace UserService.Mapper
         {
             CreateMap<Users, UsersReadDTO>();
             CreateMap<UserDTO, Users>();
-            CreateMap<UsersReadDTO, UserPublishedDto()>
+            CreateMap<UsersReadDTO, UserPublishedDto>();
         }
     }
 }

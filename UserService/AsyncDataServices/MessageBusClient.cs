@@ -2,6 +2,7 @@ using UserService.DTO;
 using Microsoft.Extensions.Configuration;
 using RabbitMQ.Client;
 using System.Text;
+using System.Text.Json;
 
 namespace UserService.AsyncDataServices
 {
@@ -27,7 +28,7 @@ namespace UserService.AsyncDataServices
 
                 _connection.ConnectionShutdown += RabbitMQ_ConnectionShutdown;
 
-                Console.WriteLine("---> Connected to Message Bus")
+                Console.WriteLine("---> Connected to Message Bus");
             }
             catch (Exception ex)
             {
@@ -35,7 +36,7 @@ namespace UserService.AsyncDataServices
             }
             
         }
-        void PublishNewUser(UserPublishedDto userPublishedDto)
+        public void PublishNewUser(UserPublishedDto userPublishedDto)
         {
             var message = JsonSerializer.Serialize(userPublishedDto);
 
@@ -46,7 +47,7 @@ namespace UserService.AsyncDataServices
             }
             else
             {
-                Console.WriteLine("--> RabbitMQ connection is closed, not sending")
+                Console.WriteLine("--> RabbitMQ connection is closed, not sending");
             }
         }
 
@@ -56,7 +57,7 @@ namespace UserService.AsyncDataServices
 
             _channel.BasicPublish(exchange: "trigger", routingKey: "", basicProperties: null, body: body);
 
-            Console.WriteLine($"---> We have sent {message}")
+            Console.WriteLine($"---> We have sent {message}");
         }
 
         public void Dispose()
@@ -71,7 +72,9 @@ namespace UserService.AsyncDataServices
 
         private void RabbitMQ_ConnectionShutdown(object sender, ShutdownEventArgs e)
         {
-            Console.WriteLine(" --->  Connection has been shutdown!")
+            Console.WriteLine(" --->  Connection has been shutdown!");
         }
+
+        
     }
 }

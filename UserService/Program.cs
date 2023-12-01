@@ -2,12 +2,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using UserService.Data;
 using UserService.Repositories;
+using UserService.AsyncDataServices;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-
+builder.Services.AddSingleton<IMessageBusClient, MessageBusClient>
 
 builder.Services.AddControllers();
 
