@@ -61,7 +61,7 @@ namespace UserService.Controllers
             try
             {
                 var userPublishedDto = _mapper.Map<UserPublishedDto>(userDTO);
-                userPublishedDto.Event = "User Published";
+                userPublishedDto.Event = "User_Published";
                 _messageBusClient.PublishNewUser(userPublishedDto);
             }
             catch (Exception ex)
