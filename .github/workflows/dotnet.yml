@@ -11,18 +11,41 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v3
+
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 6.0.x
+
     - name: Restore dependencies
       run: dotnet restore
+
     - name: Build
       run: dotnet build --no-restore
+
     - name: Test
       run: dotnet test --no-build --verbosity normal
+
+    - name: Build Docker image
+      run: docker build -t zakaria469980/userservice .
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Login to Docker Hub
+      run: echo ${{secrets.Docker_DeploymentToken}} | docker login -u ${{secrets.zakaria469980}} --password-stdin
+
+    - name: Push Docker image
+      run: docker push zakaria469980/userservice
+
+    
+        
