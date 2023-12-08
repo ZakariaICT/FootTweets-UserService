@@ -46,7 +46,7 @@ jobs:
 
 
     - name: Push Docker image
-      run: docker push zakaria469980/userservice:latest
+      run: docker push zakaria469980/userservice 
 
     
         
