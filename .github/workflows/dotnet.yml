@@ -41,4 +41,4 @@ jobs:
       with:
         entryPoint: 'dotnet'
         args: 'sonarscanner'
-        projectBaseDir: './'
+        projectBaseDir: '../UserService'
