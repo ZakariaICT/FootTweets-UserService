@@ -42,10 +42,5 @@ jobs:
         sonar-project-key: ${{ secrets.SONAR_PROJECT_KEY }}
         sonar-project-name: ${{ secrets.SONAR_PROJECT_NAME }}
         sonar-project-version: ${{ secrets.SONAR_PROJECT_VERSION }}
-        sonar-login: ${{ secrets.SONAR_LOGIN }}
-        sonar-password: ${{ secrets.SONAR_PASSWORD }}
+        sonar-login: ${{ secrets.SONAR_TOKEN }}  # Use SONAR_TOKEN instead of sonar-login and sonar-password
         sonar-host-url: 'http://localhost:9000'
-
-
-    
-        
