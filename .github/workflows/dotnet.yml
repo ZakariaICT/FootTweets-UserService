@@ -36,6 +36,16 @@ jobs:
         docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
         docker push zakaria469980/userservice:latest
 
+    - name: Run SonarQube Scan
+      uses: sonarsource/sonarqube-scan-action@v2
+      with:
+        sonar-project-key: ${{ secrets.SONAR_PROJECT_KEY }}
+        sonar-project-name: ${{ secrets.SONAR_PROJECT_NAME }}
+        sonar-project-version: ${{ secrets.SONAR_PROJECT_VERSION }}
+        sonar-login: ${{ secrets.SONAR_LOGIN }}
+        sonar-password: ${{ secrets.SONAR_PASSWORD }}
+        sonar-host-url: 'http://localhost:9000'
+
 
     
         
