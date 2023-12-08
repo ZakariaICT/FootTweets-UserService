@@ -31,7 +31,7 @@ jobs:
       run: dotnet test --no-build --verbosity normal
 
     - name: Build Docker image
-      run: docker build -t zakaria469980/userservice
+      run: docker build -t zakaria469980/userservice -f ../Dockerfile ..
 
   deploy:
     runs-on: ubuntu-latest
@@ -46,7 +46,7 @@ jobs:
 
 
     - name: Push Docker image
-      run: docker push zakaria469980/userservice
+      run: docker push zakaria469980/userservice:latest
 
     
         
