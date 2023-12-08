@@ -42,7 +42,8 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Login to Docker Hub
-      run: echo ${{ secrets.DockerToken }} | docker login -u ${{ secrets.zakaria469980 }} --password-stdin
+      run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+
 
     - name: Push Docker image
       run: docker push zakaria469980/userservice
