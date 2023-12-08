@@ -39,8 +39,6 @@ jobs:
     - name: Run SonarQube Scan
       uses: sonarsource/sonarqube-scan-action@v2
       with:
-        sonar-project-key: ${{ secrets.SONAR_PROJECT_KEY }}
-        sonar-project-name: ${{ secrets.SONAR_PROJECT_NAME }}
-        sonar-project-version: ${{ secrets.SONAR_PROJECT_VERSION }}
-        sonar-login: ${{ secrets.SONAR_TOKEN }}  # Use SONAR_TOKEN instead of sonar-login and sonar-password
-        sonar-host-url: ${{ secrets.SONAR_HOST_URL }}
+        entryPoint: 'dotnet'
+        args: 'sonarscanner'
+        projectBaseDir: './'
