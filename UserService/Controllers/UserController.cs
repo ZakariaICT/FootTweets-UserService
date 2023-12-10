@@ -23,7 +23,7 @@ namespace UserService.Controllers
             _messageBusClient = messageBusClient;
         }
 
-        [HttpGet]
+        [HttpGet("all")]
         public ActionResult<IEnumerable<UsersReadDTO>> GetUsers()
         {
             Console.WriteLine("--> Getting Users.....");
@@ -47,7 +47,7 @@ namespace UserService.Controllers
         }
 
         // Switch Usermodelgebruik naar UserDTO.
-        [HttpPost]
+        [HttpPost("post")]
         public ActionResult<UsersReadDTO> CreateUser(UserDTO user)
         {
             var userModel = _mapper.Map<Users>(user);
