@@ -13,26 +13,19 @@ spec:
         app: userservice
     spec:
       containers:
-        - name: serservice
+        - name: userservice
           image: zakaria469980/userservice:latest
-          ports:
-          - containerPort: 80   # Adjust the port number as needed
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: user-service
+  name: userservice
 spec:
+  type: NodePort
   selector:
-    app: user-service
+    app: userservice
   ports:
-    - protocol: TCP
-      port: 5116
+    - name: userservice
+      protocol: TCP
+      port: 80
       targetPort: 80
-      name: http-port
-    - protocol: TCP
-      port: 7117
-      targetPort: 443   # Adjust the target port as needed
-      name: https-port
-  type: NodePort   # Change this line to NodePort
-
