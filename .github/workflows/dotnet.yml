@@ -36,13 +36,19 @@ jobs:
         docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
         docker push zakaria469980/userservice:latest
 
-    - name: Run SonarQube Scan
-      uses: sonarsource/sonarqube-scan-action@v2
-      with:
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        SONAR_HOST_URL: http://host.docker.internal:9000
-        projectBaseDir: .
-        args: -X
+    # - name: Run SonarQube Scan
+    #   uses: sonarsource/sonarqube-scan-action@v2
+    #   with:
+    #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+    #     SONAR_HOST_URL: http://host.docker.internal:9000
+    #     projectBaseDir: .
+    #     args: -X
+
+    - name: SonarQube Analysis
+      run: |
+        dotnet /sonar-scanner/SonarScanner.MSBuild.dll begin /o:"admin" /k:"$SONAR_PROJECT_KEY" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.login="$SONAR_TOKEN"
+        dotnet build ./UserService
+        dotnet /sonar-scanner/SonarScanner.MSBuild.dll end -d:sonar.login="$SONAR_TOKEN"
 
 
 
