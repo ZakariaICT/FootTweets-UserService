@@ -1,27 +1,26 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata: 
-    name: ingress-srv
-    annotations:
-        kubernetes.io/ingress.class: nginx
-        nginx.ingress.kubernetes.io/use-regex: 'true'
+  name: ingress-srv
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/rewrite-target: /
 spec: 
-    rules:
-    - host: foottweets.com
-      http:
-        paths:
-        - path: /api/user
-          pathType: Prefix
-          backend:
-            service: 
-                name: user-service-clusterip
-                port:
-                    number: 80
-        - path: /api/media
-          pathType: Prefix
-          backend:
-            service:
-                name: media-service-clusterip
-                port:
-                    number: 80
-
+  rules:
+  - host: foottweets.com
+    http:
+      paths:
+      - path: /api/user
+        pathType: Prefix
+        backend:
+          service: 
+            name: user-service-clusterip
+            port:
+              number: 80
+      - path: /api/media
+        pathType: Prefix
+        backend:
+          service:
+            name: media-service-clusterip
+            port:
+              number: 80
