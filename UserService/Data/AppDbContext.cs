@@ -1,26 +1,21 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using UserService.Model;
 
 namespace UserService.Data
 {
     public class AppDbContext : DbContext
     {
-        private readonly IConfiguration _configuration;
-
-        public AppDbContext(DbContextOptions<AppDbContext> options, IConfiguration configuration) : base(options)
+        public AppDbContext(DbContextOptions<AppDbContext> options ) : base(options)
         {
-            _configuration = configuration;
+
         }
 
         public DbSet<Users> users { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            if (!optionsBuilder.IsConfigured)
-            {
-                optionsBuilder.UseSqlServer(_configuration.GetConnectionString("DefaultConnection"));
-            }
+            optionsBuilder.UseSqlServer(@"Server=mssqlstud.fhict.local;Database=dbi469980_userdb;User Id=dbi469980_userdb;Password=Xtt4d-8HNK; TrustServerCertificate=True;");
         }
+
     }
 }
