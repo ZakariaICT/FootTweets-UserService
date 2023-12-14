@@ -36,7 +36,7 @@ RUN apt-get update \
 # Set environment variables for SQL Server
 ENV SA_PASSWORD=Xtt4d-8HNK
 ENV ACCEPT_EULA=Y
-ENV MSSQL_DBName= dbi469980_userdb
+ENV MSSQL_DBName= userdb
 ENV MSSQL_DBUser= dbi469980
 ENV MSSQL_DBPassword= Xtt4d-8HNK
 
