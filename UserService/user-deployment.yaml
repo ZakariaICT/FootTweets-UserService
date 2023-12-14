@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: userservice-deployment
 spec:
-  replicas: 1   # Adjust the number of replicas as needed
+  replicas: 1
   selector:
     matchLabels:
       app: userservice
@@ -26,7 +26,6 @@ spec:
               value: myuser            # Use the PostgreSQL username
             - name: POSTGRES_PASSWORD
               value: mypassword        # Use the PostgreSQL password
-
 
 ---
 apiVersion: v1
