@@ -15,6 +15,18 @@ spec:
       containers:
         - name: userservice
           image: zakaria469980/userservice:latest
+          env:
+            - name: POSTGRES_HOST
+              value: postgres-service   # Use the PostgreSQL service name
+            - name: POSTGRES_PORT
+              value: "5432"
+            - name: POSTGRES_DB
+              value: mydatabase        # Use the PostgreSQL database name
+            - name: POSTGRES_USER
+              value: myuser            # Use the PostgreSQL username
+            - name: POSTGRES_PASSWORD
+              value: mypassword        # Use the PostgreSQL password
+
 
 ---
 apiVersion: v1
@@ -30,6 +42,7 @@ spec:
       protocol: TCP
       port: 80
       targetPort: 80
+
 
 
 
