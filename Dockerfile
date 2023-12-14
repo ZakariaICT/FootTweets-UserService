@@ -38,7 +38,7 @@ ENV SA_PASSWORD=Xtt4d-8HNK
 ENV ACCEPT_EULA=Y
 ENV MSSQL_DBName=dbi469980_userdb
 ENV MSSQL_DBUser=dbi469980
-ENV MSSQL_DBPassword= Xtt4d-8HNK
+ENV MSSQL_DBPassword=Xtt4d-8HNK
 
 # Configure SQL Server database
 COPY UserService/Scripts/InitializeDatabase.sql /docker-entrypoint-initdb.d/
