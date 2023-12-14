@@ -4,6 +4,8 @@ using UserService.Data;
 using UserService.Repositories;
 using UserService.AsyncDataServices;
 
+using Microsoft.Extensions.Configuration;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -12,9 +14,13 @@ builder.Services.AddSingleton<IMessageBusClient, MessageBusClient>();
 
 builder.Services.AddControllers();
 
+// Configuration setup
+builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+var configuration = builder.Configuration;
 
-    builder.services.AddDbContext<AppDbContext>(options =>
-        options.UseNpgsql(Configuration.GetConnectionString("PostgresConnection")));
+
+builder.Services.AddDbContext<AppDbContext>(options =>
+        options.UseNpgsql(configuration.GetConnectionString("PostgresConnection")));
 
 
 builder.Services.AddSwaggerGen(c =>
