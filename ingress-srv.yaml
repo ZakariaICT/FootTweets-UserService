@@ -24,3 +24,5 @@ spec:
             name: media-service-clusterip
             port:
               number: 80
+
+
