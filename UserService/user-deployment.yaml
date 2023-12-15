@@ -81,7 +81,7 @@ spec:
     spec:
       containers:
         - name: userservice
-          image: zakaria469980/userservice:latest
+          image: zakaria469980/newuserservice:latest
           ports:
             - containerPort: 5117
 ---
