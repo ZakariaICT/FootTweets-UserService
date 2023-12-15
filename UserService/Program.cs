@@ -19,8 +19,8 @@ builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnC
 var configuration = builder.Configuration;
 
 
-builder.Services.AddDbContext<AppDbContext>(options =>
-        options.UseNpgsql(configuration.GetConnectionString("PostgresConnection")));
+builder.Services.AddDbContext<AppDbContext>();
+
 
 
 builder.Services.AddSwaggerGen(c =>
@@ -35,6 +35,12 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    using var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    context.Database.EnsureCreated();
+}
 
 // Configure the HTTP request pipeline.
 app.UseSwagger();
