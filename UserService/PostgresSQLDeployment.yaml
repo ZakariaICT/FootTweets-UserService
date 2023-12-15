@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: postgres-deployment
 spec:
-  replicas: 1   # Adjust the number of replicas as needed
+  replicas: 1
   selector:
     matchLabels:
       app: postgres
@@ -24,7 +24,6 @@ spec:
               value: mydatabase
           ports:
             - containerPort: 5432
-
 ---
 apiVersion: v1
 kind: Service
