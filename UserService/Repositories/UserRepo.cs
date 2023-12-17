@@ -20,17 +20,17 @@ namespace UserService.Repositories
                 throw new ArgumentNullException(nameof(user));
             }
 
-            _context.Users.Add(user);
+            _context.User.Add(user);
         }
 
         public IEnumerable<Users> GetAllUsers()
         {
-            return _context.Users.ToList();
+            return _context.User.ToList();
         }
 
         public Users GetUserByID(Guid Guid)
         {
-            return _context.Users.FirstOrDefault(u => u.Id == Guid);
+            return _context.User.FirstOrDefault(u => u.Id == Guid);
         }
 
         public bool saveChanges()

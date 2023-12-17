@@ -10,7 +10,7 @@ namespace UserService.Data
 
         //}
 
-        public DbSet<Users> Users { get; set; } // Updated to PascalCase for better convention
+        public DbSet<Users> User { get; set; } // Updated to PascalCase for better convention
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
