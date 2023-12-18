@@ -103,6 +103,7 @@ jobs:
       run: dotnet /sonar-scanner/SonarScanner.MSBuild.dll end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
 
 
+
         
 
 
