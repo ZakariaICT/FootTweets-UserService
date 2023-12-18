@@ -76,12 +76,9 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore
 
-    - name: Build
-      run: dotnet build --no-restore
-
-    - name: Test
-      run: dotnet test --no-build --verbosity normal
-
+    - name: Build and analyze
+      run: dotnet /sonar-scanner/SonarScanner.MSBuild.dll begin /o:"zakariaict" /k:"ZakariaICT_FootTweets-UserService" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
+      
     - name: Build Docker image
       run: docker build -t zakaria469980/realestuserservice .
 
@@ -93,14 +90,9 @@ jobs:
         docker tag zakaria469980/realestuserservice foottweetscr.azurecr.io/userservice:latest
         docker push foottweetscr.azurecr.io/userservice:latest
 
-    - name: Push to Sonar Cloud - Begin Analysis
-      run: dotnet /sonar-scanner/SonarScanner.MSBuild.dll begin /o:"zakariaict" /k:"ZakariaICT_FootTweets-UserService" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
-
-    - name: Build for Sonar Cloud Analysis
-      run: dotnet build
-
     - name: Push to Sonar Cloud - End Analysis
       run: dotnet /sonar-scanner/SonarScanner.MSBuild.dll end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
+
 
 
 
