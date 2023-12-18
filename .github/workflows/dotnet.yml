@@ -94,12 +94,14 @@ jobs:
         docker push foottweetscr.azurecr.io/userservice:latest
 
     - name: Push to Sonar Cloud - Begin Analysis
-      run:  dotnet build
-            dotnet /sonar-scanner/SonarScanner.MSBuild.dll begin /o:"zakariaict" /k:"ZakariaICT_FootTweets-UserService" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
+      run: dotnet /sonar-scanner/SonarScanner.MSBuild.dll begin /o:"zakariaict" /k:"ZakariaICT_FootTweets-UserService" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
+
+    - name: Build for Sonar Cloud Analysis
+      run: dotnet build
 
     - name: Push to Sonar Cloud - End Analysis
-      run:  dotnet build
-            dotnet /sonar-scanner/SonarScanner.MSBuild.dll end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
+      run: dotnet /sonar-scanner/SonarScanner.MSBuild.dll end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
+
 
         
 
