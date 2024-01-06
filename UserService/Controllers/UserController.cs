@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using RabbitMQ.Client;
 using UserService.DTO;
 using UserService.Model;
 using UserService.Repositories;
-using UserService.AsyncDataServices;
 
 namespace UserService.Controllers
 {
@@ -11,16 +11,16 @@ namespace UserService.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
+        private readonly IConfiguration _configuration;
         private IUserRepo _userRepo;
         private IMapper _mapper;
-        private readonly IMessageBusClient _messageBusClient;
 
 
-        public UserController(IUserRepo userRepo, IMapper mapper, IMessageBusClient messageBusClient)
+        public UserController(IConfiguration configuration, IUserRepo userRepo, IMapper mapper)
         {
+            _configuration = configuration;
             _userRepo = userRepo;
             _mapper = mapper;
-            _messageBusClient = messageBusClient;
         }
 
         [HttpGet("all")]
@@ -57,19 +57,29 @@ namespace UserService.Controllers
 
             var userDTO = _mapper.Map<UsersReadDTO>(userModel);
 
-            // Send Async Message
+            // Send RabbitMQ message
             try
             {
-                var userPublishedDto = _mapper.Map<UserPublishedDto>(userDTO);
-                userPublishedDto.Event = "User_Published";
-                _messageBusClient.PublishNewUser(userPublishedDto);
+                var factory = new ConnectionFactory
+                {
+                    Uri = new Uri(_configuration["RabbitMQConnection"])
+                };
+
+                using (var connection = factory.CreateConnection())
+                using (var channel = connection.CreateModel())
+                {
+                    var rabbitMQService = new RabbitMQService(channel);
+                    rabbitMQService.SendMessage($"New user created: {userDTO.Username}");
+                }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Could not send asynchronously: {ex.Message}");
+                Console.WriteLine($"Could not send RabbitMQ message: {ex.Message}");
             }
 
             return CreatedAtRoute(nameof(GetUserByID), new { Id = userDTO.Id }, userDTO);
         }
+
+
     }
 }

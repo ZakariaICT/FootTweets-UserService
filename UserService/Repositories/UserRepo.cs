@@ -35,7 +35,8 @@ namespace UserService.Repositories
 
         public bool saveChanges()
         {
-            return (_context.SaveChanges() >= 0);
+            //return (_context.SaveChanges() >= 0);
+            return true;
         }
     }
 }
