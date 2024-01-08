@@ -15,7 +15,7 @@ namespace UserService.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseNpgsql("Host=postgres;Database=mydatabase;Username=myuser;Password=mypassword;");
+            optionsBuilder.UseNpgsql("Host=user-service-database-68b45bf4b6-sgrkm;Database=mydatabase;Username=myuser;Password=mypassword;");
         }
 
 
