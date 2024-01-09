@@ -30,7 +30,7 @@ namespace UserService.Repositories
 
         public Users GetUserByID(Guid Guid)
         {
-            return _context.users.FirstOrDefault(u => u.Id == Guid);
+            return _context.users.FirstOrDefault(u => u.Uid == Guid);
         }
 
         public bool saveChanges()

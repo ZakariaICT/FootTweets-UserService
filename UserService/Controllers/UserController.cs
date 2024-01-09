@@ -51,30 +51,30 @@ namespace UserService.Controllers
         public ActionResult<UsersReadDTO> CreateUser(UserDTO user)
         {
             var userModel = _mapper.Map<Users>(user);
-            userModel.Id = Guid.NewGuid();
+            userModel.Uid = Guid.NewGuid();
             _userRepo.CreateUser(userModel);
             _userRepo.saveChanges();
 
             var userDTO = _mapper.Map<UsersReadDTO>(userModel);
 
-            // Send RabbitMQ message
-                var factory = new ConnectionFactory
-                {
-                    Uri = new Uri(_configuration["RabbitMQConnection"])
-                };
+            //// Send RabbitMQ message
+            //    var factory = new ConnectionFactory
+            //    {
+            //        Uri = new Uri(_configuration["RabbitMQConnection"])
+            //    };
 
-                using (var connection = factory.CreateConnection())
-                using (var channel = connection.CreateModel())
-                {
-                    var rabbitMQService = new RabbitMQService(channel);
-                    rabbitMQService.SendMessage($"New user created: {userDTO.Username}");
+            //    using (var connection = factory.CreateConnection())
+            //    using (var channel = connection.CreateModel())
+            //    {
+            //        var rabbitMQService = new RabbitMQService(channel);
+            //        rabbitMQService.SendMessage($"New user created: {userDTO.Username}");
 
-                    // Process the message immediately in the database
-                    ProcessMessageLocally(userDTO);
-                }
+            //        // Process the message immediately in the database
+            //        ProcessMessageLocally(userDTO);
+            //    }
            
 
-            return CreatedAtRoute(nameof(GetUserByID), new { Id = userDTO.Id }, userDTO);
+            return CreatedAtRoute(nameof(GetUserByID), new { Id = userDTO.Uid }, userDTO);
         }
 
         private void ProcessMessageLocally(UsersReadDTO userDTO)
@@ -84,7 +84,7 @@ namespace UserService.Controllers
 
             // Save the user to the database
             var userModel = _mapper.Map<Users>(userDTO);
-            userModel.Id = Guid.NewGuid();
+            userModel.Uid = Guid.NewGuid();
             _userRepo.CreateUser(userModel);
             _userRepo.saveChanges();
         }

@@ -10,6 +10,7 @@ using Microsoft.Extensions.Hosting;
 using RabbitMQ.Client;
 using System;
 using System.Text;
+using UserService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -38,19 +39,26 @@ builder.Services.AddSwaggerGen();
 // Add RabbitMQ service
 builder.Services.AddSingleton(serviceProvider =>
 {
-   var factory = new ConnectionFactory
-   {
-       Uri = new Uri(configuration["RabbitMQConnection"]), // Add your RabbitMQ connection string to appsettings.json
-       // Other connection settings if needed
-   };
+    var factory = new ConnectionFactory
+    {
+        Uri = new Uri(configuration["RabbitMQConnection"]),
+        // Other connection settings if needed
+    };
 
-   var connection = factory.CreateConnection();
-   var channel = connection.CreateModel();
+    var connection = factory.CreateConnection();
+    var channel = connection.CreateModel();
 
-   // Declare a queue
-   channel.QueueDeclare("user_registration_queue", durable: false, exclusive: false, autoDelete: false, arguments: null);
+    // Declare a queue for tweet requests
+    channel.QueueDeclare("tweets_queue", durable: false, exclusive: false, autoDelete: false, arguments: null);
 
-   return new RabbitMQService(channel);
+    // Declare a queue for UID responses
+    channel.QueueDeclare("uid_queue", durable: false, exclusive: false, autoDelete: false, arguments: null);
+
+    // Set up RabbitMQ consumer
+    var rabbitMQConsumer = new RabbitMQConsumer(channel);
+    rabbitMQConsumer.StartListening("uid_queue"); // Adjust the queue name if needed
+
+    return new RabbitMQService(channel);
 });
 
 var app = builder.Build();

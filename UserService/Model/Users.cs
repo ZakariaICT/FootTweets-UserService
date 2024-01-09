@@ -6,7 +6,7 @@ namespace UserService.Model
     public class Users
     {
         [Required]
-        public Guid Id { get; set; }
+        public Guid Uid { get; set; }
         [Required]
 
         public string Name { get; set; }

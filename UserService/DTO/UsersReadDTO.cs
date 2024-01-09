@@ -5,7 +5,7 @@ namespace UserService.DTO
     public class UsersReadDTO
     {
         [Required]
-        public Guid Id { get; set; }
+        public Guid Uid { get; set; }
         [Required]
         public string Name { get; set; }
         [Required]
