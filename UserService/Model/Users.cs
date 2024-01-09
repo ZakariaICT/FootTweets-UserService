@@ -1,10 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
 
 namespace UserService.Model
 {
-    [Table("users")]
+    
     public class Users
     {
         [Required]
