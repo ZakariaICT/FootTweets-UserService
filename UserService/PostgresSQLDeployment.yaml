@@ -6,11 +6,11 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: user-service
+      app: userservice
   template:
     metadata:
       labels:
-        app: user-service
+        app: userservice
     spec:
       containers:
         - name: postgres-user
@@ -31,7 +31,7 @@ metadata:
   name: postgres-user
 spec:
   selector:
-    app: user-service
+    app: userservice
   ports:
     - protocol: TCP
       port: 5432

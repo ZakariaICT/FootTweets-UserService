@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: user-service-backend
+  name: userservice-deployment
 spec:
   selector:
     matchLabels:
-      app: user-service
+      app: userservice
   replicas: 1
   template:
     metadata:
       labels:
-        app: user-service
+        app: userservice
     spec:
       containers:
         - name: user-service
-          image: zakaria469980/footusertweetsss:latest
+          image: zakaria469980/footusertweetssss:latest
           ports:
             - containerPort: 5117
 ---
@@ -24,7 +24,7 @@ metadata:
   name: user-service
 spec:
   selector:
-    app: user-service
+    app: userservice
   ports:
     - protocol: TCP
       port: 5117 # externl port

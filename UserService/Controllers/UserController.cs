@@ -81,8 +81,14 @@ namespace UserService.Controllers
         {
             // Process the message (e.g., create a user in the database)
             Console.WriteLine($" [x] Received 'New user created: {userDTO.Username}'");
-            // You may want to add the logic here to process the message in the database.
+
+            // Save the user to the database
+            var userModel = _mapper.Map<Users>(userDTO);
+            userModel.Id = Guid.NewGuid();
+            _userRepo.CreateUser(userModel);
+            _userRepo.saveChanges();
         }
+
 
 
     }
