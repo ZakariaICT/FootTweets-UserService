@@ -36,22 +36,22 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // Add RabbitMQ service
-//builder.Services.AddSingleton(serviceProvider =>
-//{
-//    var factory = new ConnectionFactory
-//    {
-//        Uri = new Uri(configuration["RabbitMQConnection"]), // Add your RabbitMQ connection string to appsettings.json
-//        // Other connection settings if needed
-//    };
+builder.Services.AddSingleton(serviceProvider =>
+{
+   var factory = new ConnectionFactory
+   {
+       Uri = new Uri(configuration["RabbitMQConnection"]), // Add your RabbitMQ connection string to appsettings.json
+       // Other connection settings if needed
+   };
 
-//    var connection = factory.CreateConnection();
-//    var channel = connection.CreateModel();
+   var connection = factory.CreateConnection();
+   var channel = connection.CreateModel();
 
-//    // Declare a queue
-//    channel.QueueDeclare("user_registration_queue", durable: false, exclusive: false, autoDelete: false, arguments: null);
+   // Declare a queue
+   channel.QueueDeclare("user_registration_queue", durable: false, exclusive: false, autoDelete: false, arguments: null);
 
-//    return new RabbitMQService(channel);
-//});
+   return new RabbitMQService(channel);
+});
 
 var app = builder.Build();
 
