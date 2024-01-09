@@ -58,39 +58,39 @@ namespace UserService.Controllers
             var userDTO = _mapper.Map<UsersReadDTO>(userModel);
 
             // Send RabbitMQ message
-            try
-            {
-                var factory = new ConnectionFactory
-                {
-                    Uri = new Uri(_configuration["RabbitMQConnection"])
-                };
+            // try
+            // {
+            //     var factory = new ConnectionFactory
+            //     {
+            //         Uri = new Uri(_configuration["RabbitMQConnection"])
+            //     };
 
-                using (var connection = factory.CreateConnection())
-                using (var channel = connection.CreateModel())
-                {
-                    var rabbitMQService = new RabbitMQService(channel);
-                    rabbitMQService.SendMessage($"New user created: {userDTO.Username}");
+            //     using (var connection = factory.CreateConnection())
+            //     using (var channel = connection.CreateModel())
+            //     {
+            //         var rabbitMQService = new RabbitMQService(channel);
+            //         rabbitMQService.SendMessage($"New user created: {userDTO.Username}");
 
-                    // Process the message immediately in the database
-                    ProcessMessageLocally(userDTO);
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Could not send RabbitMQ message: {ex.Message}");
-                // If RabbitMQ message sending fails, still process the message in the database
-                ProcessMessageLocally(userDTO);
-            }
+            //         // Process the message immediately in the database
+            //         ProcessMessageLocally(userDTO);
+            //     }
+            // }
+            // catch (Exception ex)
+            // {
+            //     Console.WriteLine($"Could not send RabbitMQ message: {ex.Message}");
+            //     // If RabbitMQ message sending fails, still process the message in the database
+            //     ProcessMessageLocally(userDTO);
+            // }
 
             return CreatedAtRoute(nameof(GetUserByID), new { Id = userDTO.Id }, userDTO);
         }
 
-        private void ProcessMessageLocally(UsersReadDTO userDTO)
-        {
-            // Process the message (e.g., create a user in the database)
-            Console.WriteLine($" [x] Received 'New user created: {userDTO.Username}'");
-            // You may want to add the logic here to process the message in the database.
-        }
+        // private void ProcessMessageLocally(UsersReadDTO userDTO)
+        // {
+        //     // Process the message (e.g., create a user in the database)
+        //     Console.WriteLine($" [x] Received 'New user created: {userDTO.Username}'");
+        //     // You may want to add the logic here to process the message in the database.
+        // }
 
 
     }
