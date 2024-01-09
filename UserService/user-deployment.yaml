@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: user-service
-          image: zakaria469980/footuserserviceeee:latest
+          image: zakaria469980/userfoottweetsss:latest
           ports:
             - containerPort: 5117
 ---
@@ -33,7 +33,7 @@ spec:
         app: user-service
     spec:
       containers:            
-        - name: postgres
+        - name: postgres-user
           image: postgres
           env:
             - name: POSTGRES_USER
@@ -61,7 +61,7 @@ spec:
       port: 7117 # externl port
       targetPort: 443 # internal port
       name: https-port
-    - name: postgres 
+    - name: postgres-user
       protocol: TCP
       port: 5432
       targetPort: 5432

@@ -58,7 +58,7 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     using var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    //context.Database.EnsureCreated();
+    context.Database.EnsureCreated();
 }
 
 // Configure the HTTP request pipeline.
