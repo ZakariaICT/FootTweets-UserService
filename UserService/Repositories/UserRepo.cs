@@ -21,7 +21,6 @@ namespace UserService.Repositories
             }
 
             _context.users.Add(user);
-            saveChanges();
         }
 
         public IEnumerable<Users> GetAllUsers()
@@ -36,8 +35,7 @@ namespace UserService.Repositories
 
         public bool saveChanges()
         {
-            //return (_context.SaveChanges() >= 0);
-            return true;
+            return (_context.SaveChanges() >= 0);
         }
     }
 }
