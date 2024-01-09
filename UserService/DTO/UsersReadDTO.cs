@@ -4,6 +4,7 @@ namespace UserService.DTO
 {
     public class UsersReadDTO
     {
+        [Key]
         [Required]
         public Guid Uid { get; set; }
         [Required]

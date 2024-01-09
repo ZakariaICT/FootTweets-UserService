@@ -1,8 +1,8 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
 using System.Text;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
+using UserService.Model;
 
 namespace UserService
 {
@@ -29,14 +29,8 @@ namespace UserService
                 var body = ea.Body.ToArray();
                 var message = Encoding.UTF8.GetString(body);
 
-                // Process the message (assuming it contains tweet creation request details)
-                // Send a response with the UID to another queue
-
-                // Example: Assuming message is a JSON with tweet details, extract and process
-                var tweetDetails = Newtonsoft.Json.JsonConvert.DeserializeObject<TweetDetails>(message);
-
-                // Perform actions to get the UID (replace this with your actual logic)
-                string uid = GetUidFromUserService(tweetDetails);
+                // Extract UID from the request (customize this based on your actual implementation)
+                var uid = ExtractUidFromRequest(message);
 
                 // Send UID to another RabbitMQ queue
                 SendUidToQueue(uid);
@@ -49,6 +43,25 @@ namespace UserService
             Console.WriteLine($"Listening to RabbitMQ queue: {queueName}");
         }
 
+        private string ExtractUidFromRequest(string message)
+        {
+            try
+            {
+                // Assuming the message is a JSON with a "uid" property
+                var tweetDetails = Newtonsoft.Json.JsonConvert.DeserializeObject<UserRequest>(message);
+
+                // Return the UID from the tweetDetails
+                return tweetDetails.Uid;
+            }
+            catch (Exception ex)
+            {
+                // Handle exceptions or log them
+                Console.WriteLine($"Error extracting UID from request: {ex.Message}");
+                return null; // Or throw an exception or handle accordingly
+            }
+        }
+
+
         private void SendUidToQueue(string uid)
         {
             // Replace "uid_queue" with the actual queue name where UID messages should be sent
@@ -57,27 +70,5 @@ namespace UserService
                                   basicProperties: null,
                                   body: Encoding.UTF8.GetBytes(uid));
         }
-
-        private string GetUidFromUserService(TweetDetails tweetDetails)
-        {
-            // Implement logic to get UID from UserService based on tweet details
-            // Replace this with your actual logic
-
-            // For simplicity, just return a hardcoded UID for demonstration purposes
-            return "hardcoded_uid_for_demo";
-        }
-    }
-
-    public class TweetDetails
-    {
-        // Define your tweet details properties based on your application needs
-        [Required]
-        public string Text { get; set; }
-        [Required]
-
-        public string PictureURL { get; set; }
-        [Required]
-
-        public string Uid { get; set; }
     }
 }
