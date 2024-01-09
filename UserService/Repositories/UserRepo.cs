@@ -21,6 +21,7 @@ namespace UserService.Repositories
             }
 
             _context.users.Add(user);
+            saveChanges();
         }
 
         public IEnumerable<Users> GetAllUsers()
