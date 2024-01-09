@@ -58,24 +58,24 @@ namespace UserService.Controllers
             var userDTO = _mapper.Map<UsersReadDTO>(userModel);
 
             // Send RabbitMQ message
-            try
-            {
-                var factory = new ConnectionFactory
-                {
-                    Uri = new Uri(_configuration["RabbitMQConnection"])
-                };
+            // try
+            // {
+            //     var factory = new ConnectionFactory
+            //     {
+            //         Uri = new Uri(_configuration["RabbitMQConnection"])
+            //     };
 
-                using (var connection = factory.CreateConnection())
-                using (var channel = connection.CreateModel())
-                {
-                    var rabbitMQService = new RabbitMQService(channel);
-                    rabbitMQService.SendMessage($"New user created: {userDTO.Username}");
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Could not send RabbitMQ message: {ex.Message}");
-            }
+            //     using (var connection = factory.CreateConnection())
+            //     using (var channel = connection.CreateModel())
+            //     {
+            //         var rabbitMQService = new RabbitMQService(channel);
+            //         rabbitMQService.SendMessage($"New user created: {userDTO.Username}");
+            //     }
+            // }
+            // catch (Exception ex)
+            // {
+            //     Console.WriteLine($"Could not send RabbitMQ message: {ex.Message}");
+            // }
 
             return CreatedAtRoute(nameof(GetUserByID), new { Id = userDTO.Id }, userDTO);
         }
