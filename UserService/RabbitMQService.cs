@@ -12,15 +12,29 @@ public class RabbitMQService
        _channel = channel;
     }
 
-    public void SendMessage(string message)
+    public void SendMessage(string message, string uid)
     {
-       // Send a message
-       var body = Encoding.UTF8.GetBytes(message);
+        try
+        {
+            // Send a message to user_registration_queue
+            var body = Encoding.UTF8.GetBytes(message);
+            _channel.BasicPublish(exchange: "", routingKey: "user_registration_queue", basicProperties: null, body: body);
 
-       _channel.BasicPublish(exchange: "", routingKey: "user_registration_queue", basicProperties: null, body: body);
+            Console.WriteLine($" [x] Sent to 'user_registration_queue': '{message}'");
 
-       Console.WriteLine($" [x] Sent '{message}'");
+            // Send UID to uid_queue
+            var uidBody = Encoding.UTF8.GetBytes(uid);
+            _channel.BasicPublish(exchange: "", routingKey: "uid_queue", basicProperties: null, body: uidBody);
+
+            Console.WriteLine($" [x] Sent to 'uid_queue': '{uid}'");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error sending message: {ex.Message}");
+        }
     }
+
+
 
     public void ListenForMessages()
     {

@@ -42,21 +42,20 @@ builder.Services.AddSingleton(serviceProvider =>
     var factory = new ConnectionFactory
     {
         Uri = new Uri(configuration["RabbitMQConnection"]),
-        // Other connection settings if needed
     };
 
     var connection = factory.CreateConnection();
     var channel = connection.CreateModel();
 
-    // Declare a queue for tweet requests
-    channel.QueueDeclare("tweets_queue", durable: false, exclusive: false, autoDelete: false, arguments: null);
+    // Declare a queue for user registration requests
+    channel.QueueDeclare("user_registration_queue", durable: false, exclusive: false, autoDelete: false, arguments: null);
 
     // Declare a queue for UID responses
     channel.QueueDeclare("uid_queue", durable: false, exclusive: false, autoDelete: false, arguments: null);
 
     // Set up RabbitMQ consumer
     var rabbitMQConsumer = new RabbitMQConsumer(channel);
-    rabbitMQConsumer.StartListening("uid_queue"); // Adjust the queue name if needed
+    rabbitMQConsumer.StartListening("user_registration_queue");
 
     return new RabbitMQService(channel);
 });
