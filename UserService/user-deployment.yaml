@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: user-service
-          image: zakaria469980/testuserfoots:latest
+          image: zakaria469980/testuserfootss:latest
           ports:
             - containerPort: 5117
 ---

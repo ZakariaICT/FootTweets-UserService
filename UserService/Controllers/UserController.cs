@@ -50,31 +50,41 @@ namespace UserService.Controllers
         [HttpPost("post")]
         public ActionResult<UsersReadDTO> CreateUser(UserDTO user)
         {
-            var userModel = _mapper.Map<Users>(user);
-            userModel.Uid = Guid.NewGuid();
-            _userRepo.CreateUser(userModel);
-            _userRepo.saveChanges();
-
-            var userDTO = _mapper.Map<UsersReadDTO>(userModel);
-
-            // Send RabbitMQ message with UID
-            var factory = new ConnectionFactory
+            try
             {
-                Uri = new Uri(_configuration["RabbitMQConnection"])
-            };
+                var userModel = _mapper.Map<Users>(user);
+                userModel.Uid = Guid.NewGuid();
+                _userRepo.CreateUser(userModel);
+                _userRepo.saveChanges();
 
-            using (var connection = factory.CreateConnection())
-            using (var channel = connection.CreateModel())
-            {
-                var rabbitMQService = new RabbitMQService(channel);
-                rabbitMQService.SendMessage($"New user created: {userDTO.Uid}", userDTO.Uid.ToString());
+                var userDTO = _mapper.Map<UsersReadDTO>(userModel);
 
-                // Process the message immediately in the database
-                ProcessMessageLocally(userDTO);
+                // Send RabbitMQ message with UID
+                var factory = new ConnectionFactory
+                {
+                    Uri = new Uri(_configuration["RabbitMQConnection"])
+                };
+
+                using (var connection = factory.CreateConnection())
+                using (var channel = connection.CreateModel())
+                {
+                    var rabbitMQService = new RabbitMQService(channel);
+                    rabbitMQService.SendMessage($"New user created: {userDTO.Uid}", userDTO.Uid.ToString());
+
+                    // Process the message immediately in the database
+                    ProcessMessageLocally(userDTO);
+                }
+
+                return CreatedAtRoute(nameof(GetUserByID), new { Id = userDTO.Uid }, userDTO);
             }
-
-            return CreatedAtRoute(nameof(GetUserByID), new { Id = userDTO.Uid }, userDTO);
+            catch (Exception ex)
+            {
+                // Log the exception details
+                Console.WriteLine($"Error creating user: {ex.Message}");
+                return StatusCode(500, "Internal Server Error");
+            }
         }
+
 
         private void ProcessMessageLocally(UsersReadDTO userDTO)
         {
