@@ -48,14 +48,14 @@ builder.Services.AddSingleton(serviceProvider =>
     var channel = connection.CreateModel();
 
     // Declare a queue for user registration requests
-    channel.QueueDeclare("user_registration_queue", durable: false, exclusive: false, autoDelete: false, arguments: null);
+    //channel.QueueDeclare("user_registration_queue", durable: false, exclusive: false, autoDelete: false, arguments: null);
 
     // Declare a queue for UID responses
     channel.QueueDeclare("uid_queue", durable: false, exclusive: false, autoDelete: false, arguments: null);
 
     // Set up RabbitMQ consumer
     var rabbitMQConsumer = new RabbitMQConsumer(channel);
-    rabbitMQConsumer.StartListening("user_registration_queue");
+    rabbitMQConsumer.StartListening("uid_queue");
 
     return new RabbitMQService(channel);
 });

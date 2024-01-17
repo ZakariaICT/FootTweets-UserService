@@ -33,9 +33,32 @@ namespace UserService.Repositories
             return _context.users.FirstOrDefault(u => u.Uid == Guid);
         }
 
+        public Users GetUserByUidAuth(string ID)
+        {
+            return _context.users.FirstOrDefault(u => u.UidAuth == ID);
+        }
+
         public bool saveChanges()
         {
             return (_context.SaveChanges() >= 0);
         }
+
+
+        public void UpdateUser(Users user)
+        {
+            // No implementation required with EF Core,
+            // but you might want to check if the user exists
+        }
+
+        public void DeleteUser(Users user)
+        {
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            _context.users.Remove(user);
+        }
+
     }
 }

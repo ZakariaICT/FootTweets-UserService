@@ -46,6 +46,18 @@ namespace UserService.Controllers
             return NotFound();
         }
 
+        [HttpGet("by-uidAuth/{uidAuth}", Name = "GetUserByUidAuth")]
+        public ActionResult<UsersReadDTO> GetUserByUidAuth(string uidAuth)
+        {
+            var user = _userRepo.GetUserByUidAuth(uidAuth);
+            if (user != null)
+            {
+                return Ok(_mapper.Map<UsersReadDTO>(user));
+            }
+
+            return NotFound();
+        }
+
         // Switch Usermodelgebruik naar UserDTO.
         [HttpPost("post")]
         public ActionResult<UsersReadDTO> CreateUser(UserDTO user)
@@ -53,9 +65,9 @@ namespace UserService.Controllers
             try
             {
                 var userModel = _mapper.Map<Users>(user);
-                userModel.Uid = Guid.NewGuid();
-                _userRepo.CreateUser(userModel);
-                _userRepo.saveChanges();
+                // userModel.Uid = Guid.NewGuid();
+                // _userRepo.CreateUser(userModel);
+                // _userRepo.saveChanges();
 
                 var userDTO = _mapper.Map<UsersReadDTO>(userModel);
 
@@ -69,13 +81,13 @@ namespace UserService.Controllers
                 using (var channel = connection.CreateModel())
                 {
                     var rabbitMQService = new RabbitMQService(channel);
-                    rabbitMQService.SendMessage($"New user created: {userDTO.Uid}", userDTO.Uid.ToString());
+                    rabbitMQService.SendMessage($"New user created: {userDTO.UidAuth}", userDTO.UidAuth.ToString());
 
                     // Process the message immediately in the database
                     ProcessMessageLocally(userDTO);
                 }
 
-                return CreatedAtRoute(nameof(GetUserByID), new { Id = userDTO.Uid }, userDTO);
+                return CreatedAtRoute(nameof(GetUserByID), new { Id = userDTO.UidAuth }, userDTO);
             }
             catch (Exception ex)
             {
@@ -93,10 +105,48 @@ namespace UserService.Controllers
 
             // Save the user to the database
             var userModel = _mapper.Map<Users>(userDTO);
-            userModel.Uid = Guid.NewGuid();
+            //userModel.Uid = Guid.NewGuid();
             _userRepo.CreateUser(userModel);
             _userRepo.saveChanges();
         }
+
+
+
+        [HttpPut("{id}")]
+        public ActionResult UpdateUser(Guid id, UserDTO userDto)
+        {
+            var userFromRepo = _userRepo.GetUserByID(id);
+            if (userFromRepo == null)
+            {
+                return NotFound();
+            }
+
+            // Additional logic to ensure the user can only update their own account
+
+            _mapper.Map(userDto, userFromRepo);
+            _userRepo.UpdateUser(userFromRepo);
+            _userRepo.saveChanges();
+
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        public ActionResult DeleteUser(Guid id)
+        {
+            var userFromRepo = _userRepo.GetUserByID(id);
+            if (userFromRepo == null)
+            {
+                return NotFound();
+            }
+
+            // Additional logic to ensure the user can only delete their own account
+
+            _userRepo.DeleteUser(userFromRepo);
+            _userRepo.saveChanges();
+
+            return NoContent();
+        }
+
 
 
 

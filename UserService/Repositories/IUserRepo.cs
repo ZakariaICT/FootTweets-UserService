@@ -11,5 +11,11 @@ namespace UserService.Repositories
         Users GetUserByID(Guid Guid);
 
         void CreateUser(Users user);
+
+        Users GetUserByUidAuth(string ID);
+
+        void UpdateUser(Users user);
+
+        void DeleteUser(Users user);
     }
 }

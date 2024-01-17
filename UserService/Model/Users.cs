@@ -2,7 +2,7 @@
 
 namespace UserService.Model
 {
-    
+
     public class Users
     {
         [Key]
@@ -30,5 +30,9 @@ namespace UserService.Model
         [Required]
 
         public string Country { get; set; }
+
+        [Required]
+
+        public string UidAuth { get; set; }
     }
 }

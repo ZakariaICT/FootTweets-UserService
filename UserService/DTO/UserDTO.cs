@@ -25,5 +25,9 @@ namespace UserService.DTO
         [Required]
 
         public string Country { get; set; }
+
+        [Required]
+
+        public string UidAuth { get; set; }
     }
 }
