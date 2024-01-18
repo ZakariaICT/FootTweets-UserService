@@ -5,6 +5,13 @@ namespace UserService.Data
 {
     public class AppDbContext : DbContext
     {
+        private object options;
+
+        public AppDbContext(object options)
+        {
+            this.options = options;
+        }
+
         //public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         //{
 

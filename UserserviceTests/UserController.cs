@@ -1,8 +1,7 @@
 ﻿using AutoMapper;
+using Castle.Core.Configuration;
 using Microsoft.AspNetCore.Mvc;
-using RabbitMQ.Client;
 using UserService.DTO;
-using UserService.Model;
 using UserService.Repositories;
 
 namespace UserService.Controllers
@@ -14,7 +13,6 @@ namespace UserService.Controllers
         private readonly IConfiguration _configuration;
         private IUserRepo _userRepo;
         private IMapper _mapper;
-
 
         public UserController(IConfiguration configuration, IUserRepo userRepo, IMapper mapper)
         {
@@ -146,5 +144,10 @@ namespace UserService.Controllers
 
             return NoContent();
         }
+
+
+
+
+
     }
 }
