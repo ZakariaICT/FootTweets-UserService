@@ -143,7 +143,29 @@ namespace UserService.Controllers
             _userRepo.DeleteUser(userFromRepo);
             _userRepo.saveChanges();
 
+            // Send RabbitMQ message for user deletion
+            try
+            {
+                var factory = new ConnectionFactory
+                {
+                    Uri = new Uri(_configuration["RabbitMQConnection"])
+                };
+
+                using (var connection = factory.CreateConnection())
+                using (var channel = connection.CreateModel())
+                {
+                    var rabbitMQService = new RabbitMQService(channel);
+                    rabbitMQService.DeleteUser(uidAuth);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error sending delete message to RabbitMQ: {ex.Message}");
+                // Consider how you want to handle this error. Maybe log it or handle it differently.
+            }
+
             return NoContent();
         }
+
     }
 }
