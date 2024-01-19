@@ -53,6 +53,9 @@ builder.Services.AddSingleton(serviceProvider =>
     // Declare a queue for UID responses
     channel.QueueDeclare("uid_queue", durable: false, exclusive: false, autoDelete: false, arguments: null);
 
+    // Declare a queue for Deletion responses
+    channel.QueueDeclare("user.deleted", durable: false, exclusive: false, autoDelete: false, arguments: null);
+
     // Set up RabbitMQ consumer
     var rabbitMQConsumer = new RabbitMQConsumer(channel);
     rabbitMQConsumer.StartListening("uid_queue");

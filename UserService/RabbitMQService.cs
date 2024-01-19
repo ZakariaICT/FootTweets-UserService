@@ -2,6 +2,7 @@ using System.Text;
 using System;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
+using UserService.Model;
 
 public class RabbitMQService
 {
@@ -10,6 +11,11 @@ public class RabbitMQService
     public RabbitMQService(IModel channel)
     {
        _channel = channel;
+    }
+
+    public RabbitMQService()
+    {
+
     }
 
     public void SendMessage(string message, string uid)
@@ -34,28 +40,21 @@ public class RabbitMQService
         }
     }
 
+    public void DeleteUser(string uid)
+    {
+        // Publish a message to RabbitMQ for other services to consume
+        var message = new
+        {
+            UserId = uid
+        };
 
+        var messageBytes = Encoding.UTF8.GetBytes(Newtonsoft.Json.JsonConvert.SerializeObject(message));
 
-    //public void ListenForMessages()
-    //{
-    //   // Declare the queue if it doesn't exist
-    //   _channel.QueueDeclare(queue: "user_registration_queue", durable: false, exclusive: false, autoDelete: false, arguments: null);
+        _channel.BasicPublish(exchange: "",
+                              routingKey: "user.deleted", // RabbitMQ topic
+                              basicProperties: null,
+        body: messageBytes);
 
-    //   // Set up the consumer
-    //   var consumer = new EventingBasicConsumer(_channel);
-    //   consumer.Received += (model, ea) =>
-    //   {
-    //       var body = ea.Body.ToArray();
-    //       var message = Encoding.UTF8.GetString(body);
-
-    //       // Process the message (e.g., create a user in the database)
-    //       Console.WriteLine($" [x] Received '{message}'");
-
-    //       // Acknowledge the message
-    //       _channel.BasicAck(ea.DeliveryTag, false);
-    //   };
-
-    //   // Start consuming messages
-    //   _channel.BasicConsume(queue: "user_registration_queue", autoAck: false, consumer: consumer);
-    //}
+        Console.WriteLine($"User with ID {uid} deleted and message published.");
+    }
 }

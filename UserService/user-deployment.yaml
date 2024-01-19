@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: user-service
-          image: zakaria469980/foots_userservice:latest
+          image: zakaria469980/footing_userservice:latest
           ports:
             - containerPort: 5117
 ---
@@ -35,7 +35,7 @@ spec:
       targetPort: 443 # internal port
       name: https-port
   # LoadBalancer to expose service externally, Should use nodePort or ClusterIp when Ingress is setup
-  type: ClusterIP
+  type: LoadBalancer
 
 
 

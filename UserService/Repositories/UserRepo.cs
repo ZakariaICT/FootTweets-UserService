@@ -7,10 +7,12 @@ namespace UserService.Repositories
     public class UserRepo : IUserRepo
     {
         private readonly AppDbContext _context;
+        private readonly RabbitMQService _rabbitMQService;
 
-        public UserRepo(AppDbContext context)
+        public UserRepo(AppDbContext context, RabbitMQService rabbitMQService)
         {
             _context = context;
+            _rabbitMQService = rabbitMQService;
         }
 
         public void CreateUser(Users user)
@@ -56,7 +58,7 @@ namespace UserService.Repositories
             {
                 throw new ArgumentNullException(nameof(user));
             }
-
+            _rabbitMQService.DeleteUser(user.UidAuth);
             _context.users.Remove(user);
         }
 

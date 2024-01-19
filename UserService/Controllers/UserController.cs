@@ -140,7 +140,6 @@ namespace UserService.Controllers
             }
 
             // Additional logic to ensure the user can only delete their own account
-
             _userRepo.DeleteUser(userFromRepo);
             _userRepo.saveChanges();
 
