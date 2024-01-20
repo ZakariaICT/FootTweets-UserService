@@ -83,7 +83,14 @@ jobs:
       run: dotnet test --no-build --verbosity normal
 
     - name: Build Docker image
-      run: docker build -t zakaria469980/foots_userservice .
+      run: docker build -t zakaria469980/foottweets-userservice .
+
+    - name: Log in to Docker Hub
+      run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+    - name: Push Docker image
+      run: docker push zakaria469980/foottweets-userservice 
+
 
     # - name: Log in to Azure Container Registry
     #   run: echo "${{ secrets.ACR_PASSWORD }}" | docker login foottweetscr.azurecr.io -u "${{ secrets.ACR_USERNAME }}" --password-stdin

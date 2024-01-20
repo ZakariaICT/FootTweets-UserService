@@ -59,5 +59,27 @@ namespace UserService.Repositories
             _context.users.Remove(user);
         }
 
+        public void RemoveDuplicateUsers()
+        {
+            // Group users by UidAuth and filter groups with more than one user
+            var duplicateGroups = _context.users
+                .GroupBy(u => u.UidAuth)
+                .Where(g => g.Count() > 1);
+
+            foreach (var group in duplicateGroups)
+            {
+                // Skip the first user in each group (to keep one user from the duplicates)
+                var duplicates = group.Skip(1);
+
+                foreach (var duplicateUser in duplicates)
+                {
+                    _context.users.Remove(duplicateUser);
+                }
+            }
+
+            // Save the changes to the database
+            _context.SaveChanges();
+        }
+
     }
 }

@@ -17,5 +17,7 @@ namespace UserService.Repositories
         void UpdateUser(Users user);
 
         void DeleteUser(Users user);
+
+        void RemoveDuplicateUsers();
     }
 }
