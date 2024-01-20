@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: user-service
-          image: zakaria469980/footing_userserviceee:latest
+          image: zakaria469980/foottweets-userservicee:latest
           ports:
             - containerPort: 5117
 ---

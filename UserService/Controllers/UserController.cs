@@ -130,7 +130,7 @@ namespace UserService.Controllers
             return NoContent();
         }
 
-        [HttpDelete("{uidAuth}")]
+        [HttpDelete("delete/{uidAuth}")]
         public ActionResult DeleteUser(string uidAuth)
         {
             var userFromRepo = _userRepo.GetUserByUidAuth(uidAuth);
