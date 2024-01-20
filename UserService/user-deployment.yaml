@@ -35,7 +35,7 @@ spec:
       targetPort: 443 # internal port
       name: https-port
   # LoadBalancer to expose service externally, Should use nodePort or ClusterIp when Ingress is setup
-  type: LoadBalancer
+  type: ClusterIP
 
 
 
