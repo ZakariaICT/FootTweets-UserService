@@ -12,7 +12,7 @@ spec:
       labels:
         app: userservice
     spec:
-      containers:
+     containers:
         - name: postgres-user
           image: postgres:latest
           env:
@@ -22,8 +22,17 @@ spec:
               value: mypassword
             - name: POSTGRES_DB
               value: mydatabase
+            - name: PGDATA
+              value: /var/lib/postgresql/data/pgdata
           ports:
             - containerPort: 5432
+          volumeMounts:
+            - name: postgres-storage
+              mountPath: /var/lib/postgresql/data
+     volumes:
+        - name: postgres-storage
+          persistentVolumeClaim:
+            claimName: postgres-pvc
 ---
 apiVersion: v1
 kind: Service
